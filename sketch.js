@@ -27,7 +27,7 @@ fetch(forecastUrl)
 })
     .catch(error => {
     console.error('Error fetching hourly forecast data:', error);
-    alert('Error fetching hourly forecast data. Please try again.');
+    alert('Error fetching hourly forecast data. Please recheck city name.');
 });
 
 }
@@ -89,3 +89,4 @@ function displayHourlyForecast (hourlyData) {
 function showImage() {
 const weatherIcon = document.getElementById('weather-icon'); weatherIcon.style.display = 'block';
 }
+

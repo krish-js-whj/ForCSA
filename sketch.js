@@ -89,4 +89,3 @@ function displayHourlyForecast (hourlyData) {
 function showImage() {
 const weatherIcon = document.getElementById('weather-icon'); weatherIcon.style.display = 'block';
 }
-

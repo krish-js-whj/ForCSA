@@ -1,24 +1,14 @@
 function getWeather() {
     const apiKey = '106652c6de8f5266d3fb293470f11426';
     const city = document.getElementById('city').value;
-
+    const loading = document.getElementById("loading");
 if (!city) {
     alert('Please enter a city');
     return;
 }
 const currentWeatherUrl =`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
 const forecastUrl=`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`;
-
-
-fetch(currentWeatherUrl)
-    .then(response => response.json())
-    .then(data => {
-        displayWeather(data);
-    })
-    .catch(error => {
-        console.error('Error fetching current weather data:', error);
-        alert('Error fetching current weather data. Please try again.');
-});
+loading.classList.remove("hidden");
 
 fetch(forecastUrl)
     .then(response => response.json())
@@ -28,8 +18,20 @@ fetch(forecastUrl)
     .catch(error => {
     console.error('Error fetching hourly forecast data:', error);
     alert('Error fetching hourly forecast data. Please recheck city name.');
-});
-
+}
+    loading.classList.add("hidden");
+);
+    
+fetch(currentWeatherUrl)
+    .then(response => response.json())
+    .then(data => {
+        displayWeather(data);    
+    })
+    .catch(error => {
+        console.error('Error fetching current weather data:', error);
+        alert('Error fetching current weather data. Please try again.');
+}       loading.classList.add("hidden");
+);
 }
 function displayWeather(data) {
     const tempDivInfo = document.getElementById('temp-div');
@@ -89,4 +91,5 @@ function displayHourlyForecast (hourlyData) {
 function showImage() {
 const weatherIcon = document.getElementById('weather-icon'); weatherIcon.style.display = 'block';
 }
+
 

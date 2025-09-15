@@ -1,36 +1,44 @@
 function getWeather() {
     const apiKey = '106652c6de8f5266d3fb293470f11426';
-    const city = document.getElementById('city').value;
+    const city = document.getElementById('city').value.trim();
     const loading = document.getElementById("loading");
+    //clear weather icon to ensure it is unaffected by previous errors
 if (!city) {
     alert('Please enter a city');
     return;
 }
-const currentWeatherUrl =`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
-const forecastUrl=`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`;
-loading.classList.remove("hidden");
-
+    const currentWeatherUrl =`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+    const forecastUrl=`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`;
+    loading.classList.remove("hidden");
+//need to disable the button once called or until the user goes back to input
 fetch(forecastUrl)
     .then(response => response.json())
     .then(data => {
-    displayHourlyForecast(data.list);
+        displayHourlyForecast(data.list);
 })
     .catch(error => {
-    console.error('Error fetching hourly forecast data:', error);
-    alert('Error fetching hourly forecast data. Please recheck city name.');
+        console.error('Error fetching hourly forecast data:', error);
+        alert('Error fetching hourly forecast data. Please recheck city name.');
 }
+    .finally(() => {
     loading.classList.add("hidden");
+  });
+    
 );
     
 fetch(currentWeatherUrl)
     .then(response => response.json())
     .then(data => {
-        displayWeather(data);    
+        displayWeather(data); 
     })
     .catch(error => {
         console.error('Error fetching current weather data:', error);
         alert('Error fetching current weather data. Please try again.');
-}       loading.classList.add("hidden");
+}       
+    .finally(() => {
+    loading.classList.add("hidden");
+  });
+    
 );
 }
 function displayWeather(data) {
@@ -44,21 +52,21 @@ function displayWeather(data) {
     tempDivInfo.innerHTML = '';
 }
 
-function displayWeather(data) {
 if (data.cod === '404') {
     weatherInfoDiv.innerHTML = `<p>${data.message}</p>`;
+    //need to cancel the second api call
 } else {
-const cityName = data.name;
-const temperature = Math.round(data.main.temp -273.15);
-const description = data.weather[0].description;
-const iconCode = data.weather[0].icon;
-const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@4x.png`;
+    const cityName = data.name;
+    const temperature = Math.round(data.main.temp -273.15);
+    const description = data.weather[0].description;
+    const iconCode = data.weather[0].icon;
+    const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@4x.png`;
 const temperatureHTML = `
-<p>${temperature}°C</p>
+    <p>${temperature}°C</p>
 `;
 const weatherHtml = `
-<p>${cityName}</p>
-<p>${description}</p>
+    <p>${cityName}</p>
+    <p>${description}</p>
 `;
 tempDivInfo.innerHTML = temperatureHTML;
 weatherInfoDiv.innerHTML = weatherHtml;
@@ -91,5 +99,6 @@ function displayHourlyForecast (hourlyData) {
 function showImage() {
 const weatherIcon = document.getElementById('weather-icon'); weatherIcon.style.display = 'block';
 }
+
 
 

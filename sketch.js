@@ -2,7 +2,6 @@ async function getWeather() {
     const apiKey = '106652c6de8f5266d3fb293470f11426';
     const city = document.getElementById('city').value.trim();
     const loading = document.getElementById("loading");
-    //clear weather icon to ensure it is unaffected by previous errors
     //handling errors like empty text and no internet
 if (!city) {
     alert('Please enter a city');
@@ -15,6 +14,14 @@ if (!navigator.onLine) {
 }
     const currentWeatherUrl =`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
     const forecastUrl=`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`;
+    const tempDivInfo = document.getElementById('temp-div');
+    const weatherInfoDiv = document.getElementById('weather-info');
+    const weatherIcon = document.getElementById('weather-icon');
+    const hourlyForecastDiv = document.getElementById('hourly-forecast');
+// Clear previous content
+    weatherInfoDiv.innerHTML = '';
+    hourlyForecastDiv.innerHTML ='';
+    tempDivInfo.innerHTML = '';
     loading.classList.remove("hidden");
 //need to disable the button once called or until the user goes back to input
 try {
@@ -55,16 +62,7 @@ try {
 }
 
 function displayWeather(data) {
-    const tempDivInfo = document.getElementById('temp-div');
-    const weatherInfoDiv = document.getElementById('weather-info');
-    const weatherIcon = document.getElementById('weather-icon');
-    const hourlyForecastDiv = document.getElementById('hourly-forecast');
-// Clear previous content
-    weatherInfoDiv.innerHTML = '';
-    hourlyForecastDiv.innerHTML ='';
-    tempDivInfo.innerHTML = '';
-
-
+    
 if (data.cod === '404') {
     weatherInfoDiv.innerHTML = `<p>${data.message}</p>`;
     //need to cancel the second api call
@@ -112,6 +110,7 @@ function displayHourlyForecast (hourlyData) {
 function showImage() {
 const weatherIcon = document.getElementById('weather-icon'); weatherIcon.style.display = 'block';
 }
+
 
 
 

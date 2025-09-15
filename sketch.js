@@ -15,16 +15,16 @@ fetch(forecastUrl)
     .then(response => response.json())
     .then(data => {
         displayHourlyForecast(data.list);
-})
+    })
     .catch(error => {
         console.error('Error fetching hourly forecast data:', error);
         alert('Error fetching hourly forecast data. Please recheck city name.');
-}
+    })
     .finally(() => {
     loading.classList.add("hidden");
-  });
+    });
     
-);
+
     
 fetch(currentWeatherUrl)
     .then(response => response.json())
@@ -34,12 +34,11 @@ fetch(currentWeatherUrl)
     .catch(error => {
         console.error('Error fetching current weather data:', error);
         alert('Error fetching current weather data. Please try again.');
-}       
+    })       
     .finally(() => {
     loading.classList.add("hidden");
-  });
+    });
     
-);
 }
 function displayWeather(data) {
     const tempDivInfo = document.getElementById('temp-div');
@@ -50,7 +49,7 @@ function displayWeather(data) {
     weatherInfoDiv.innerHTML = '';
     hourlyForecastDiv.innerHTML ='';
     tempDivInfo.innerHTML = '';
-}
+
 
 if (data.cod === '404') {
     weatherInfoDiv.innerHTML = `<p>${data.message}</p>`;
@@ -99,6 +98,7 @@ function displayHourlyForecast (hourlyData) {
 function showImage() {
 const weatherIcon = document.getElementById('weather-icon'); weatherIcon.style.display = 'block';
 }
+
 
 
 

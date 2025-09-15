@@ -16,6 +16,7 @@ border-radius: 15px;
 box-shadow: 08px 32px rgba(0, 0, 0, 0.1);
 backdrop-filter: blur(10px);
 border: 1px solid rgba(255, 255, 255, 0.1);
+font-size: 30px;
 text-align: center;
 
 }
@@ -59,7 +60,7 @@ margin-top: -30px;
 }
 
 #weather-info {
-font-size: 20px;
+font-size: 30px;
 }
 
 #weather-icon {
@@ -122,4 +123,5 @@ margin-top: 10px;
   .container { padding: 15px; }
   h1 { font-size: 1.5rem; }
 }
+
 

@@ -1,4 +1,4 @@
-function getWeather() {
+async function getWeather() {
     const apiKey = '106652c6de8f5266d3fb293470f11426';
     const city = document.getElementById('city').value.trim();
     const loading = document.getElementById("loading");
@@ -17,59 +17,43 @@ if (!navigator.onLine) {
     const forecastUrl=`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`;
     loading.classList.remove("hidden");
 //need to disable the button once called or until the user goes back to input
-fetch(forecastUrl)
-    .then(response =>{
-        //checks if response was as expected. this prevents runtime error due to server-side error
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        //validate the data structure
-        if (data && data.main && data.weather && data.weather.length > 0){
-        displayHourlyForecast(data.list);
-        } else {
-        console.error('Error in forecast data recieved:', error);
-        alert('The city might not exist or the data recieved might be incomplete');
-    }
-    })
-    .catch(error => {
-        console.error('Error fetching hourly forecast data:', error);
-        alert('Error fetching hourly forecast data. Please recheck city name.');
-    })
-    .finally(() => {
-    loading.classList.add("hidden");
-    });
-    
+try {
+        //Using await instead of directly fetching
+        //If error in api is found, the other function is not called
+        const weatherResponse = await fetch(currentWeatherUrl);
+        const weatherData = await weatherResponse.json();
 
-    
-fetch(currentWeatherUrl)
-    .then(response =>{
-        //checks if response was as expected. this prevents runtime error due to server-side error
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
+        //Checking for errors: 1) non-existent city, 2) bad response/invalid data and breaking out of function
+        if (weatherData.cod === '404') {
+            alert('Error: City not found. Please recheck the city name.');
+            return;
         }
-        return response.json();
-    })
-    .then(data => {
-        //validate the data structure
-        if (data && data.main && data.weather && data.weather.length > 0){
-        displayWeather(data); 
-        } else {
-        console.error('Error in current weather data recieved:', error);
-        alert('The city might not exist or the data recieved might be incomplete');
+        if (!weatherResponse.ok || !weatherData || !weatherData.main || !weatherData.weather) {
+            throw new Error('Invalid current weather data received.');
+        }
+        displayWeather(weatherData);
+
+        //if error did not cancel function this code executes
+        const forecastResponse = await fetch(forecastUrl);
+        if (!forecastResponse.ok) {
+            throw new Error('Network response for forecast was not ok');
+        }
+        const forecastData = await forecastResponse.json();
+
+        //Check for invalid forecast data
+        if (!forecastData || !forecastData.list || forecastData.list.length === 0) {
+            throw new Error('Invalid forecast data received.');
+        }
+        displayHourlyForecast(forecastData.list);
+
+    } catch (error) {
+        console.error('Error fetching weather data:', error);
+        alert('Error fetching weather data. Please try again.');
+    } finally {
+        loading.classList.add("hidden");
     }
-    })
-    .catch(error => {
-        console.error('Error fetching current weather data:', error);
-        alert('Error fetching current weather data. Please try again.');
-    })       
-    .finally(() => {
-    loading.classList.add("hidden");
-    });
-    
 }
+
 function displayWeather(data) {
     const tempDivInfo = document.getElementById('temp-div');
     const weatherInfoDiv = document.getElementById('weather-info');
@@ -128,6 +112,7 @@ function displayHourlyForecast (hourlyData) {
 function showImage() {
 const weatherIcon = document.getElementById('weather-icon'); weatherIcon.style.display = 'block';
 }
+
 
 
 

@@ -3,18 +3,36 @@ function getWeather() {
     const city = document.getElementById('city').value.trim();
     const loading = document.getElementById("loading");
     //clear weather icon to ensure it is unaffected by previous errors
+    //handling errors like empty text and no internet
 if (!city) {
     alert('Please enter a city');
     return;
+}
+if (!navigator.onLine) {
+        alert('You are currently offline. Please check your internet connection.');
+        loading.classList.add("hidden");
+        return;
 }
     const currentWeatherUrl =`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
     const forecastUrl=`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`;
     loading.classList.remove("hidden");
 //need to disable the button once called or until the user goes back to input
 fetch(forecastUrl)
-    .then(response => response.json())
+    .then(response =>{
+        //checks if response was as expected. this prevents runtime error due to server-side error
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
     .then(data => {
+        //validate the data structure
+        if (data && data.main && data.weather && data.weather.length > 0){
         displayHourlyForecast(data.list);
+        } else {
+        console.error('Error in forecast data recieved:', error);
+        alert('The city might not exist or the data recieved might be incomplete');
+    }
     })
     .catch(error => {
         console.error('Error fetching hourly forecast data:', error);
@@ -27,9 +45,21 @@ fetch(forecastUrl)
 
     
 fetch(currentWeatherUrl)
-    .then(response => response.json())
+    .then(response =>{
+        //checks if response was as expected. this prevents runtime error due to server-side error
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
     .then(data => {
+        //validate the data structure
+        if (data && data.main && data.weather && data.weather.length > 0){
         displayWeather(data); 
+        } else {
+        console.error('Error in current weather data recieved:', error);
+        alert('The city might not exist or the data recieved might be incomplete');
+    }
     })
     .catch(error => {
         console.error('Error fetching current weather data:', error);
@@ -98,6 +128,7 @@ function displayHourlyForecast (hourlyData) {
 function showImage() {
 const weatherIcon = document.getElementById('weather-icon'); weatherIcon.style.display = 'block';
 }
+
 
 
 

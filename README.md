@@ -1,11 +1,17 @@
 # ForCSA
 This is a weather app
 
+Commit 1
 feat: Basic UI 
-Introduced a search button
-Background looks finalised
-Device compatilbity implemented
-Succesfully implemented 'empty text' alert
-BUG Update: reference error for the url not resolved
-All commits were done VSC and API error was fixed after a bracket problem in getWeather()
-fix: forecastUrl works but an error for current eather pops up before it
+      add a search button
+Used a background template
+Implemented device compatilbity by adjusting background according to device
+Implemented 'empty text' alert for no input while search button was pressed
+test error for empty reference in API found
+Commit ?
+bugfix API error was fixed after a bracket problem in getWeather()
+This means forecastUrl works
+error for current weather found
+Commit 15-16
+refactor and style: locating possible edge cases and possible solutions
+

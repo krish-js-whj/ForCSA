@@ -12,7 +12,8 @@ if (!navigator.onLine) {
         loading.classList.add("hidden");
         return;
 }
-    
+    const currentWeatherUrl =`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+    const forecastUrl=`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`;
     loading.classList.remove("hidden");
 //need to disable the button once called or until the user goes back to input
 try {
@@ -53,8 +54,7 @@ try {
 }
 
 function displayWeather(data) {
-    const currentWeatherUrl =`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
-    const forecastUrl=`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`;
+    
     const tempDivInfo = document.getElementById('temp-div');
     const weatherInfoDiv = document.getElementById('weather-info');
     const weatherIcon = document.getElementById('weather-icon');
@@ -110,6 +110,7 @@ function displayHourlyForecast (hourlyData) {
 function showImage() {
 const weatherIcon = document.getElementById('weather-icon'); weatherIcon.style.display = 'block';
 }
+
 
 
 

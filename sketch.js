@@ -71,7 +71,7 @@ if (data.cod === '404') {
     const temperature = Math.round(data.main.temp -273.15);
     const description = data.weather[0].description;
     const iconCode = data.weather[0].icon;
-    const iconUrl = `https://in.pinterest.com/pin/1149966086124381491/`;
+    const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@4x.png`;
 const temperatureHTML = `
     <p>${temperature}°C</p>
 `;
@@ -110,3 +110,4 @@ function displayHourlyForecast (hourlyData) {
 function showImage() {
 const weatherIcon = document.getElementById('weather-icon'); weatherIcon.style.display = 'block';
     }
+

@@ -1,4 +1,4 @@
-async function getWeather() {
+    async function getWeather() {
     const apiKey = '106652c6de8f5266d3fb293470f11426';
     const city = document.getElementById('city').value.trim();
     const loading = document.getElementById("loading");
@@ -109,14 +109,4 @@ function displayHourlyForecast (hourlyData) {
 }
 function showImage() {
 const weatherIcon = document.getElementById('weather-icon'); weatherIcon.style.display = 'block';
-}
-
-
-
-
-
-
-
-
-
-
+    }
